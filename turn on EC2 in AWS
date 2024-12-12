@@ -1,0 +1,27 @@
+import time
+import boto3
+import json
+import urllib.request
+
+#  Airtable
+AIRTABLE_API_KEY = "..."
+BASE_ID = "..."
+TABLE_NAME = "..."
+RECORD_ID = "..."
+
+def update_airtable_computer_status():
+    url = f"https://api.airtable.com/v0/{BASE_ID}/{TABLE_NAME}/{RECORD_ID}"
+    headers = {
+        "Authorization": f"Bearer {AIRTABLE_API_KEY}",
+        "Content-Type": "application/json"
+    }
+    data = {
+        "fields": {
+            "The computer": "On"
+        }
+    }
+    
+    json_data = json.dumps(data).encode('utf-8')
+    request = urllib.request.Request(url, data=json_data, headers=headers, method="PATCH")
+    response = urllib.request.urlopen(request)
+    print(response.read().decode('utf-8'))
